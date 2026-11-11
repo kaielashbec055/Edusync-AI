@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
-import { useLanguage } from '../../context/LanguageContext';
 import { MOCK_STUDENT_SUBJECTS, MOCK_ASSIGNMENTS, MOCK_BADGES } from '../../mockData/mockData';
 import { SubjectGrade, Assignment } from '../../types';
 import { getStudentSubjectsApi, getStudentAssignmentsApi, submitAssignmentApi } from '../../services/api';
@@ -27,7 +26,6 @@ import {
 
 export const StudentDashboard: React.FC = () => {
   const { user, setActiveTab, addMoodEntry } = useApp();
-  const { t } = useLanguage();
   const [selectedMood, setSelectedMood] = useState<number | null>(4); // Happy by default
   const [submittedAssignments, setSubmittedAssignments] = useState<string[]>(['asg_02']);
   const [subjects, setSubjects] = useState<SubjectGrade[]>(MOCK_STUDENT_SUBJECTS);
@@ -99,7 +97,7 @@ export const StudentDashboard: React.FC = () => {
           <div className="space-y-3 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-black flex items-center gap-1.5 border border-white/20">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin-slow" /> {user.gradeOrSubject || 'Class 5-A'} • {user.name}
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin-slow" /> Class 5-A • Aarav Sharma
               </span>
               <span className="px-3.5 py-1 rounded-full bg-amber-400/20 text-amber-200 backdrop-blur-md text-xs font-black border border-amber-300/30 flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-amber-400 animate-bounce" /> 7 Day Streak!
@@ -107,7 +105,7 @@ export const StudentDashboard: React.FC = () => {
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight">
-              {t('dash.goodMorning', 'Good Morning')}, {user.name.split(' ')[0]}! 👋
+              Good Morning, Aarav! 👋
             </h1>
 
             {/* XP Level Progress Bar */}
@@ -160,8 +158,8 @@ export const StudentDashboard: React.FC = () => {
             📚
           </div>
           <div>
-            <span className="text-xs font-extrabold text-purple-700 uppercase tracking-wider block">{t('dash.homework', 'HOMEWORK')}</span>
-            <span className="text-xl font-black text-[#1E1B4B]">3 {t('dash.pending', 'Pending')}</span>
+            <span className="text-xs font-extrabold text-purple-700 uppercase tracking-wider block">Homework</span>
+            <span className="text-xl font-black text-[#1E1B4B]">3 Pending</span>
           </div>
         </div>
 
@@ -170,8 +168,8 @@ export const StudentDashboard: React.FC = () => {
             ✅
           </div>
           <div>
-            <span className="text-xs font-extrabold text-emerald-700 uppercase tracking-wider block">{t('dash.attendance', 'ATTENDANCE')}</span>
-            <span className="text-xl font-black text-[#1E1B4B]">95% {t('dash.present', 'Present')}</span>
+            <span className="text-xs font-extrabold text-emerald-700 uppercase tracking-wider block">Attendance</span>
+            <span className="text-xl font-black text-[#1E1B4B]">95% Present</span>
           </div>
         </div>
 
@@ -180,8 +178,8 @@ export const StudentDashboard: React.FC = () => {
             🎯
           </div>
           <div>
-            <span className="text-xs font-extrabold text-amber-700 uppercase tracking-wider block">{t('dash.dailyGoal', 'DAILY GOAL')}</span>
-            <span className="text-xl font-black text-[#1E1B4B]">2 / 5 {t('dash.tasksDone', 'Tasks Done')}</span>
+            <span className="text-xs font-extrabold text-amber-700 uppercase tracking-wider block">Daily Goal</span>
+            <span className="text-xl font-black text-[#1E1B4B]">2 / 5 Tasks Done</span>
           </div>
         </div>
       </motion.div>
@@ -195,7 +193,7 @@ export const StudentDashboard: React.FC = () => {
               <div>
                 <h3 className="font-black text-lg text-[#1E1B4B] flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-[#7C3AED]" />
-                  <span>{t('dash.schedule', "Today's Schedule")}</span>
+                  <span>Today's Schedule</span>
                 </h3>
                 <p className="text-xs text-purple-700 font-medium">28 May, Tuesday • Class 5-A</p>
               </div>

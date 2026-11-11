@@ -8,9 +8,7 @@ export const registerSchema = z.object({
     .object({
       name: z.string().min(2, 'Name must be at least 2 characters').max(120),
       email: z.string().email('A valid email is required'),
-      username: z.string().min(3).max(50).optional(),
-      phone: z.string().optional(),
-      password: z.string().min(6, 'Password must be at least 6 characters'),
+      password: z.string().min(8, 'Password must be at least 8 characters'),
       role: roleEnum,
       // Optional role-specific onboarding fields
       grade: z.string().optional(), // used when role = STUDENT
@@ -24,13 +22,10 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   body: z
     .object({
-      email: z.string().optional(),
-      identifier: z.string().optional(),
+      email: z.string().email('A valid email is required'),
       password: z.string().min(1, 'Password is required'),
     })
-    .refine((data) => !!(data.email || data.identifier), {
-      message: 'Either email or identifier is required',
-    }),
+    .strict(),
 });
 
 export const refreshSchema = z.object({

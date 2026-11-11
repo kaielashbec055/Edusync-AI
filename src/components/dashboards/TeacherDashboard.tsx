@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
-import { useLanguage } from '../../context/LanguageContext';
 import { MOCK_RISK_ALERTS } from '../../mockData/mockData';
 import {
   Users,
@@ -19,7 +18,6 @@ import {
 
 export const TeacherDashboard: React.FC = () => {
   const { user, setActiveTab } = useApp();
-  const { t } = useLanguage();
   const [attendance, setAttendance] = useState<Record<string, 'present' | 'absent' | 'late'>>({
     std_101: 'present',
     std_102: 'absent',
@@ -60,9 +58,9 @@ export const TeacherDashboard: React.FC = () => {
       <div className="p-6 md:p-8 rounded-3xl purple-gradient-hero text-white shadow-xl glow-purple flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <span className="px-3.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-black flex items-center gap-1.5 w-fit border border-white/20">
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" /> {user.gradeOrSubject || 'Grade 5-A Educator'} • {user.name}
+            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" /> Grade 5-A Educator • Mrs. Sharma
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black">{t('dash.goodMorning', 'Good Morning')}, {user.name} 👋</h1>
+          <h1 className="text-2xl sm:text-3xl font-black">Good Morning, Mrs. Sharma 👋</h1>
           <p className="text-purple-100 text-xs sm:text-sm font-medium">
             Class Overview: <strong className="text-white font-black">32 Enrolled Students</strong> • Average Score: <strong className="text-emerald-300 font-black">82% (+8%)</strong>
           </p>
@@ -167,10 +165,11 @@ export const TeacherDashboard: React.FC = () => {
                       <button
                         key={st}
                         onClick={() => toggleAttendance(std.id, st as any)}
-                        className={`px-3.5 py-1 rounded-xl text-xs font-extrabold capitalize transition-all cursor-pointer ${status === st
+                        className={`px-3.5 py-1 rounded-xl text-xs font-extrabold capitalize transition-all cursor-pointer ${
+                          status === st
                             ? st === 'present' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-rose-500 text-white shadow-xs'
                             : 'bg-white text-purple-800 border border-purple-200 hover:bg-purple-50'
-                          }`}
+                        }`}
                       >
                         {st}
                       </button>

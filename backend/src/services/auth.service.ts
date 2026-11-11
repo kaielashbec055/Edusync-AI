@@ -54,15 +54,6 @@ export async function registerUser(input: RegisterInput): Promise<AuthResult> {
     throw AppError.conflict('An account with this email already exists.');
   }
 
-  if (input.username) {
-    const existingUsername = await (prisma.user as any).findFirst({
-      where: { username: input.username.toLowerCase() },
-    });
-    if (existingUsername) {
-      throw AppError.conflict('This username is already taken.');
-    }
-  }
-
   const passwordHash = await hashPassword(input.password);
 
   const user = await prisma.$transaction(async (tx) => {
@@ -70,12 +61,10 @@ export async function registerUser(input: RegisterInput): Promise<AuthResult> {
       data: {
         name: input.name,
         email: input.email.toLowerCase(),
-        username: input.username ? input.username.toLowerCase() : undefined,
-        phone: input.phone,
         passwordHash,
         role: input.role,
         avatarUrl: DEFAULT_AVATARS[input.role],
-      } as any,
+      },
     });
 
     if (input.role === Role.STUDENT) {
@@ -114,23 +103,14 @@ export async function registerUser(input: RegisterInput): Promise<AuthResult> {
 }
 
 export async function loginUser(input: LoginInput): Promise<AuthResult> {
-  const target = (input.email || input.identifier || '').toLowerCase();
-  const user = await (prisma.user as any).findFirst({
-    where: {
-      OR: [
-        { email: target },
-        { username: target },
-      ],
-    },
-  });
-
+  const user = await prisma.user.findUnique({ where: { email: input.email.toLowerCase() } });
   if (!user || !user.isActive) {
-    throw AppError.unauthorized('Invalid email/username or password.');
+    throw AppError.unauthorized('Invalid email or password.');
   }
 
   const valid = await comparePassword(input.password, user.passwordHash);
   if (!valid) {
-    throw AppError.unauthorized('Invalid email/username or password.');
+    throw AppError.unauthorized('Invalid email or password.');
   }
 
   const tokens = await issueTokens(user.id, user.role, user.email);

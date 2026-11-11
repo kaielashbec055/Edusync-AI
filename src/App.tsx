@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppProvider, useApp } from './context/AppContext';
 import { ChatProvider } from './context/ChatContext';
-import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { StudentDashboard } from './components/dashboards/StudentDashboard';
@@ -19,7 +18,6 @@ import { AuthModal } from './components/modules/landing/AuthModal';
 import { EmergencySOSModal } from './components/modules/safety/EmergencySOSModal';
 import { FloatingAIAssistant } from './components/ai/FloatingAIAssistant';
 import { GamifiedLearning } from './components/modules/learning/GamifiedLearning';
-import { SettingsPage } from './components/settings/SettingsPage';
 
 const AppContent: React.FC = () => {
   const { role, activeTab, isLandingPage } = useApp();
@@ -76,9 +74,6 @@ const AppContent: React.FC = () => {
       case 'sos_command':
         return <AdminDashboard />;
 
-      case 'settings':
-        return <SettingsPage />;
-
       default:
         return <StudentDashboard />;
     }
@@ -122,13 +117,11 @@ const AppContent: React.FC = () => {
 
 export function App() {
   return (
-    <LanguageProvider>
-      <AppProvider>
-        <ChatProvider>
-          <AppContent />
-        </ChatProvider>
-      </AppProvider>
-    </LanguageProvider>
+    <AppProvider>
+      <ChatProvider>
+        <AppContent />
+      </ChatProvider>
+    </AppProvider>
   );
 }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
-import { useLanguage } from '../../context/LanguageContext';
 import {
   LayoutDashboard,
   Shield,
@@ -14,53 +13,47 @@ import {
   AlertOctagon,
   ChevronRight,
   Bus,
-  CheckSquare,
-  Settings
+  CheckSquare
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const { role, setRole, activeTab, setActiveTab, setIsSosModalOpen, setIsLandingPage } = useApp();
-  const { t } = useLanguage();
 
   const getNavItems = () => {
     switch (role) {
       case 'student':
         return [
-          { id: 'dashboard', label: t('menu.studentDashboard', 'Student Dashboard'), icon: <LayoutDashboard className="w-4 h-4" /> },
-          { id: 'achievements', label: t('menu.quizzes', 'Gamified Quizzes & Badges'), icon: <Award className="w-4 h-4" />, badge: 'GAME' },
-          { id: 'safety', label: t('menu.safety', 'Safety & Bus Tracker'), icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
-          { id: 'wellness', label: t('menu.wellness', 'Mental Wellness'), icon: <HeartPulse className="w-4 h-4" />, badge: 'AI' },
-          { id: 'communication', label: t('menu.communication', 'Messages & Circulars'), icon: <MessageSquare className="w-4 h-4" /> },
-          { id: 'settings', label: t('nav.settingsAndProfile', 'Settings & Profile'), icon: <Settings className="w-4 h-4" /> }
+          { id: 'dashboard', label: 'Student Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'achievements', label: 'Gamified Quizzes & Badges', icon: <Award className="w-4 h-4" />, badge: 'GAME' },
+          { id: 'safety', label: 'Safety & Bus Tracker', icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
+          { id: 'wellness', label: 'Mental Wellness', icon: <HeartPulse className="w-4 h-4" />, badge: 'AI' },
+          { id: 'communication', label: 'Messages & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
         ];
 
       case 'parent':
         return [
-          { id: 'dashboard', label: t('menu.parentDashboard', 'Parent Dashboard'), icon: <LayoutDashboard className="w-4 h-4" /> },
-          { id: 'safety', label: t('menu.parentSafety', 'Child Safety & Bus GPS'), icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
-          { id: 'wellness', label: t('menu.childWellness', 'Child Wellness Pulse'), icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'fees', label: t('menu.fees', 'Fee Portal & Receipts'), icon: <CreditCard className="w-4 h-4" /> },
-          { id: 'communication', label: t('menu.parentComm', 'Teacher Connect & Circulars'), icon: <MessageSquare className="w-4 h-4" /> },
-          { id: 'settings', label: t('nav.settingsAndProfile', 'Settings & Profile'), icon: <Settings className="w-4 h-4" /> }
+          { id: 'dashboard', label: 'Parent Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'safety', label: 'Child Safety & Bus GPS', icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
+          { id: 'wellness', label: 'Child Wellness Pulse', icon: <HeartPulse className="w-4 h-4" /> },
+          { id: 'fees', label: 'Fee Portal & Receipts', icon: <CreditCard className="w-4 h-4" /> },
+          { id: 'communication', label: 'Teacher Connect & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
         ];
 
       case 'teacher':
         return [
-          { id: 'dashboard', label: t('menu.teacherDashboard', 'Teacher Dashboard'), icon: <LayoutDashboard className="w-4 h-4" /> },
-          { id: 'attendance_mgr', label: t('menu.attendance', 'Attendance Marker'), icon: <CheckSquare className="w-4 h-4" /> },
-          { id: 'safety', label: t('menu.gatePass', 'Gate Pass & Transport'), icon: <Shield className="w-4 h-4" /> },
-          { id: 'wellness', label: t('menu.counselor', 'Counselor & Wellness Flags'), icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'communication', label: t('menu.communication', 'Parent Chat & Circulars'), icon: <MessageSquare className="w-4 h-4" /> },
-          { id: 'settings', label: t('nav.settingsAndProfile', 'Settings & Profile'), icon: <Settings className="w-4 h-4" /> }
+          { id: 'dashboard', label: 'Teacher Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'attendance_mgr', label: 'Attendance Marker', icon: <CheckSquare className="w-4 h-4" /> },
+          { id: 'safety', label: 'Gate Pass & Transport', icon: <Shield className="w-4 h-4" /> },
+          { id: 'wellness', label: 'Counselor & Wellness Flags', icon: <HeartPulse className="w-4 h-4" /> },
+          { id: 'communication', label: 'Parent Chat & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
         ];
 
       case 'admin':
         return [
-          { id: 'dashboard', label: t('menu.adminDashboard', 'Admin Command Center'), icon: <LayoutDashboard className="w-4 h-4" /> },
-          { id: 'safety', label: t('menu.fleet', 'Transport Fleet Monitor'), icon: <Bus className="w-4 h-4" /> },
-          { id: 'wellness', label: t('menu.wellness', 'School-Wide Mood Trends'), icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'communication', label: t('menu.broadcast', 'Broadcast Circulars'), icon: <MessageSquare className="w-4 h-4" /> },
-          { id: 'settings', label: t('nav.settingsAndProfile', 'Settings & Profile'), icon: <Settings className="w-4 h-4" /> }
+          { id: 'dashboard', label: 'Admin Command Center', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'safety', label: 'Transport Fleet Monitor', icon: <Bus className="w-4 h-4" /> },
+          { id: 'wellness', label: 'School-Wide Mood Trends', icon: <HeartPulse className="w-4 h-4" /> },
+          { id: 'communication', label: 'Broadcast Circulars', icon: <MessageSquare className="w-4 h-4" /> }
         ];
 
       default:

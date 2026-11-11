@@ -15,8 +15,6 @@ export interface UserProfileDTO {
   id: string;
   name: string;
   email: string;
-  username?: string;
-  phone?: string;
   role: 'student' | 'parent' | 'teacher' | 'admin';
   avatar: string;
   title?: string;
@@ -44,8 +42,6 @@ export async function toUserProfile(userId: string): Promise<UserProfileDTO> {
     id: user.id,
     name: user.name,
     email: user.email,
-    username: (user as any).username,
-    phone: user.phone ?? undefined,
     role: roleToLower(user.role),
     avatar: user.avatarUrl,
   };
@@ -95,26 +91,9 @@ export async function getUserById(userId: string) {
 
 export async function updateOwnProfile(
   userId: string,
-  updates: { name?: string; avatarUrl?: string; phone?: string; gradeOrSubject?: string },
+  updates: { name?: string; avatarUrl?: string; phone?: string },
 ): Promise<UserProfileDTO> {
-  const { gradeOrSubject, ...userUpdates } = updates;
-  if (Object.keys(userUpdates).length > 0) {
-    await prisma.user.update({ where: { id: userId }, data: userUpdates });
-  }
-
-  if (gradeOrSubject !== undefined) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { teacherProfile: true, studentProfile: true },
-    });
-    if (user?.role === Role.TEACHER && user.teacherProfile) {
-      await prisma.teacherProfile.update({
-        where: { id: user.teacherProfile.id },
-        data: { subjectSpecialty: gradeOrSubject },
-      });
-    }
-  }
-
+  await prisma.user.update({ where: { id: userId }, data: updates });
   return toUserProfile(userId);
 }
 

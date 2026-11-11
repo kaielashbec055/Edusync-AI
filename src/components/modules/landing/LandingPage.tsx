@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useApp } from '../../../context/AppContext';
-import { useLanguage } from '../../../context/LanguageContext';
 import { UserRole } from '../../../types';
 import {
   Sparkles,
@@ -24,15 +23,11 @@ import {
   Clock,
   QrCode,
   Smile,
-  Award,
-  Globe,
-  ChevronDown
+  Award
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
   const { setRole, setIsLandingPage, openAuthModal } = useApp();
-  const { language, setLanguage, availableLanguages, t } = useLanguage();
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState<'wellness' | 'transport' | 'academics' | 'sos'>('wellness');
 
   const handleLaunchRole = (role: UserRole) => {
@@ -78,93 +73,24 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Top Navbar Actions: Language Switcher, Sign In & Sign Up */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* 5-Language Selector Dropdown */}
-          <div className="relative">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-              className="px-3.5 py-2.5 rounded-2xl bg-white hover:bg-purple-50 text-[#1E1B4B] border border-purple-100 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
-              title="Select Language"
-            >
-              <Globe className="w-3.5 h-3.5 text-[#7C3AED]" />
-              <span className="text-sm">
-                {availableLanguages.find(l => l.code === language)?.flag}
-              </span>
-              <span className="hidden sm:inline text-xs font-black text-[#1E1B4B]">
-                {availableLanguages.find(l => l.code === language)?.nativeName}
-              </span>
-              <ChevronDown className="w-3 h-3 text-purple-400" />
-            </motion.button>
-
-            <AnimatePresence>
-              {showLanguageMenu && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-52 bg-white/95 backdrop-blur-xl border border-purple-100 rounded-3xl shadow-xl z-50 p-2 space-y-1 overflow-hidden"
-                >
-                  <p className="text-[10px] font-black uppercase text-purple-900 px-3 py-1.5 tracking-wider border-b border-purple-50">
-                    Language / భాష / भाषा / தமிழ் / മലയാളം
-                  </p>
-                  {availableLanguages.map((l) => (
-                    <button
-                      key={l.code}
-                      onClick={() => {
-                        setLanguage(l.code);
-                        setShowLanguageMenu(false);
-                      }}
-                      className={`w-full text-left p-2.5 rounded-2xl flex items-center justify-between text-xs transition-all cursor-pointer ${
-                        language === l.code
-                          ? 'bg-purple-100 border border-purple-200 font-black text-[#7C3AED]'
-                          : 'hover:bg-purple-50 text-[#1E1B4B] font-bold'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-base">{l.flag}</span>
-                        <div>
-                          <p className="leading-tight">{l.nativeName}</p>
-                          <p className="text-[10px] text-purple-600 font-medium">{l.name}</p>
-                        </div>
-                      </div>
-                      {language === l.code && (
-                        <span className="w-2 h-2 rounded-full bg-[#7C3AED]" />
-                      )}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
+        {/* Top Navbar Actions: Sign In & Sign Up */}
+        <div className="flex items-center gap-3">
           <button
-            data-testid="landing-btn-signin"
-            onClick={() => {
-              setShowLanguageMenu(false);
-              openAuthModal('signin');
-            }}
+            onClick={() => openAuthModal('signin')}
             className="px-4 py-2.5 rounded-2xl bg-white hover:bg-purple-50 text-[#1E1B4B] border border-purple-100 text-xs font-extrabold transition-all flex items-center gap-2 cursor-pointer shadow-sm"
           >
             <LogIn className="w-3.5 h-3.5 text-[#7C3AED]" />
-            <span>{t('nav.signIn')}</span>
+            <span>Sign In</span>
           </button>
 
           <motion.button
-            data-testid="landing-btn-signup"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setShowLanguageMenu(false);
-              openAuthModal('signup');
-            }}
+            onClick={() => openAuthModal('signup')}
             className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#7C3AED] to-[#9333EA] hover:from-[#6D28D9] hover:to-[#7E22CE] text-white text-xs font-extrabold shadow-md glow-purple transition-all flex items-center gap-2 cursor-pointer"
           >
             <UserPlus className="w-4 h-4" />
-            <span>{t('nav.signUp')}</span>
+            <span>Sign Up Free</span>
           </motion.button>
         </div>
       </nav>

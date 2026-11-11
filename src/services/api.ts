@@ -92,85 +92,23 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 // 1. AUTH API
 // ---------------------------------------------------------------------------
 
-export async function loginApi(identifier: string, password?: string): Promise<{ user: UserProfile; accessToken: string }> {
+export async function loginApi(email: string, password?: string): Promise<{ user: UserProfile; accessToken: string }> {
   try {
     const data = await apiFetch<{ user: UserProfile; tokens: { accessToken: string; refreshToken: string } }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email: identifier, password: password || 'Password123!' })
+      body: JSON.stringify({ email, password: password || 'Password123!' })
     });
     setAccessToken(data.tokens.accessToken);
     setRefreshToken(data.tokens.refreshToken);
     return { user: data.user, accessToken: data.tokens.accessToken };
   } catch {
-    // Check locally registered users first
-    try {
-      const savedUsersRaw = localStorage.getItem('edupulse_registered_users');
-      if (savedUsersRaw) {
-        const savedUsers: Array<UserProfile & { passwordHash?: string }> = JSON.parse(savedUsersRaw);
-        const idLower = identifier.toLowerCase();
-        const found = savedUsers.find(u => u.email.toLowerCase() === idLower || (u.username && u.username.toLowerCase() === idLower));
-        if (found) {
-          const token = 'token_' + found.id;
-          setAccessToken(token);
-          return { user: found, accessToken: token };
-        }
-      }
-    } catch {
-      // ignore
-    }
-
     // Local Dev Fallback if backend server is not running
-    const roleKey: UserRole = identifier.includes('alex') ? 'student' :
-                            identifier.includes('sarah') ? 'parent' :
-                            identifier.includes('thorne') ? 'teacher' : 'admin';
+    const roleKey: UserRole = email.includes('alex') ? 'student' :
+                            email.includes('sarah') ? 'parent' :
+                            email.includes('thorne') ? 'teacher' : 'admin';
     const fallbackUser = MOCK_USERS[roleKey];
     setAccessToken('mock_access_token_' + roleKey);
     return { user: fallbackUser, accessToken: 'mock_access_token_' + roleKey };
-  }
-}
-
-export async function registerApi(payload: {
-  name: string;
-  email: string;
-  phone?: string;
-  username: string;
-  role: UserRole;
-  password?: string;
-}): Promise<{ user: UserProfile; accessToken: string }> {
-  try {
-    const data = await apiFetch<{ user: UserProfile; tokens: { accessToken: string; refreshToken: string } }>('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
-    setAccessToken(data.tokens.accessToken);
-    setRefreshToken(data.tokens.refreshToken);
-    return { user: data.user, accessToken: data.tokens.accessToken };
-  } catch {
-    // Local fallback: Create and return user profile
-    const newUser: UserProfile = {
-      id: `usr_${Date.now()}`,
-      name: payload.name,
-      email: payload.email,
-      username: payload.username,
-      phone: payload.phone,
-      role: payload.role,
-      avatar: MOCK_USERS[payload.role]?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      title: payload.role.charAt(0).toUpperCase() + payload.role.slice(1),
-      gradeOrSubject: payload.role === 'student' ? 'Grade 10 - Section A' : payload.role === 'teacher' ? 'STEM General' : 'Parent Ward'
-    };
-    const token = 'mock_access_token_' + newUser.id;
-    setAccessToken(token);
-    return { user: newUser, accessToken: token };
-  }
-}
-
-export async function logoutApi(): Promise<void> {
-  try {
-    await apiFetch('/auth/logout', { method: 'POST' });
-  } catch {
-    // offline
-  } finally {
-    clearTokens();
   }
 }
 
@@ -399,8 +337,9 @@ export async function sendAiChatApi(prompt: string, userRole: UserRole): Promise
     }
 
     // 3. Math & Equation Solving
-    if (query.includes('math') || query.includes('solve') || query.includes('equation') || query.includes('+') || query.includes('-') || query.includes('*') || query.includes('/') || query.includes('fraction') || query.includes('algebra') || /\d+\s*[\+\-\*\/]\s*\d+/.test(prompt)) {
-      const eqMatch = prompt.match(/(\d+(?:\.\d+)?)\s*([\+\-\*\/])\s*(\d+(?:\.\d+)?)/);
+    if (query.includes('math') || query.includes('solve') || query.includes('equation') || query.includes('+') || query.includes('-') || query.includes('*') || query.includes('/') || query.includes('fraction') || query.includes('algebra')) {
+      // Try parsing numeric patterns if any equation was entered
+      const eqMatch = prompt.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
       let solutionStr = '';
       if (eqMatch) {
         const n1 = parseFloat(eqMatch[1]);
@@ -410,45 +349,13 @@ export async function sendAiChatApi(prompt: string, userRole: UserRole): Promise
         if (op === '+') res = n1 + n2;
         if (op === '-') res = n1 - n2;
         if (op === '*') res = n1 * n2;
-        if (op === '/') res = n2 !== 0 ? Math.round((n1 / n2) * 100) / 100 : 0;
-        solutionStr = `\n\n🔢 **Instant Step Calculation**: ${n1} ${op} ${n2} = **${res}**`;
+        if (op === '/') res = n2 !== 0 ? n1 / n2 : 0;
+        solutionStr = `\n\n🔢 **Instant Calculation**: ${n1} ${op} ${n2} = **${res}**`;
       }
 
       return {
-        text: `📐 **Step-by-Step Math Solution & Explanation**:${solutionStr}\n\n1. **Identify Problem**: Break into operands and operator.\n2. **Order of Operations (PEMDAS/BODMAS)**: Parentheses ➔ Exponents ➔ Multiplication/Division ➔ Addition/Subtraction.\n3. **Calculation Check**: Verify inverse operation to confirm the solution.\n\n🎯 **Active Quest**: Complete your pending Math Quizzes for **+100 XP**!`,
-        suggestedActions: ['Play Math Quest', 'Submit Assignment', 'Ask AI Study Buddy']
-      };
-    }
-
-    // 4. Chemistry & Matter
-    if (query.includes('chemistry') || query.includes('atom') || query.includes('element') || query.includes('molecule') || query.includes('acid') || query.includes('periodic table')) {
-      return {
-        text: `🧪 **Chemistry & Molecular Science Overview**:\n\n• **Atoms**: The basic unit of chemical elements, composed of protons (+), neutrons (0), and electrons (-).\n• **Periodic Table**: Organizes elements by atomic number (# of protons). Elements in the same group have similar chemical properties.\n• **Chemical Bonds**: Ionic (electron transfer) vs Covalent (electron sharing).\n• **Acids & Bases**: pH < 7 indicates an acid (releases H⁺), pH > 7 indicates a base (releases OH⁻).\n\n🔬 Lab Experiment #4 on Organic Chemistry is scheduled this Friday!`,
-        suggestedActions: ['Periodic Table Guide', 'Lab Safety Rules', 'Contact Educator']
-      };
-    }
-
-    // 5. English Grammar & Writing
-    if (query.includes('english') || query.includes('grammar') || query.includes('essay') || query.includes('noun') || query.includes('verb') || query.includes('tense')) {
-      return {
-        text: `📚 **English Grammar & Writing Assistance**:\n\n• **Parts of Speech**: Noun (person/place/thing), Verb (action/state), Adjective (describes noun), Adverb (describes verb/adjective).\n• **Tenses**: Past, Present, Future (Simple, Continuous, Perfect, Perfect Continuous).\n• **Essay Structure**: Introduction (Hook + Thesis Statement) ➔ Body Paragraphs (PEEL: Point, Evidence, Explanation, Link) ➔ Conclusion.\n\n📝 Next assignment: Analytical Essay due this Friday.`,
-        suggestedActions: ['Essay Writing Tips', 'Grammar Practice Quiz', 'Ask AI Buddy']
-      };
-    }
-
-    // 6. History & Social Studies
-    if (query.includes('history') || query.includes('civilization') || query.includes('revolution') || query.includes('war') || query.includes('empire')) {
-      return {
-        text: `🏛️ **History & Social Studies Summary**:\n\n• **Key Concepts**: Cause and Effect, Primary vs Secondary sources, Historical significance.\n• **Major Epochs**: Ancient Civilizations (Indus Valley, Mesopotamia, Egypt) ➔ Medieval Period ➔ Industrial Revolution & Modern Age.\n• **Chronology**: Understanding historical timelines is essential for contextualizing events.\n\n📍 Period 5: History is in Room 101 at 03:00 PM.`,
-        suggestedActions: ['Review History Notes', 'View Timeline', 'Ask AI Buddy']
-      };
-    }
-
-    // 7. Mental Wellness & Breathing Exercise
-    if (query.includes('wellness') || query.includes('stress') || query.includes('anxiety') || query.includes('breathe') || query.includes('calm') || query.includes('tired')) {
-      return {
-        text: `🧘 **Guided Wellness & Calm Mind Exercise**:\n\nTake a brief 1-minute mindfulness pause right now:\n\n1. 🌬️ **Inhale deeply** through your nose for **4 seconds**.\n2. ⏸️ **Hold gently** for **7 seconds**.\n3. 💨 **Exhale slowly** through your mouth for **8 seconds**.\n\nRemember: School balance is a journey. If you need support, our school counselors are available in the Wellness Hub!`,
-        suggestedActions: ['Start Breathing Exercise', 'Log Mood Entry', 'Visit Wellness Hub']
+        text: `📐 **Step-by-Step Math Solution & Explanation**:${solutionStr}\n\n1. **Identify Given Info**: Separate known constants from unknown variables.\n2. **Order of Operations (PEMDAS/BODMAS)**: Parentheses ➔ Exponents ➔ Multiplication/Division ➔ Addition/Subtraction.\n3. **Isolate Variable**: Apply inverse operations on both sides to solve for 'x'.\n\n🎯 **Active Quest**: Complete 3 Math Quizzes in the Learning Module for **+100 XP**!`,
+        suggestedActions: ['Play Math Quest', 'Submit Assignment', 'Ask AI Buddy']
       };
     }
 
@@ -492,35 +399,5 @@ export async function sendAiChatApi(prompt: string, userRole: UserRole): Promise
       text: `💡 **EduSync AI Explanation for "${topicCapitalized || prompt}"**:\n\nHere is a clear breakdown of **${topicCapitalized || prompt}**:\n\n1. **Core Concept**: ${topicCapitalized || prompt} is a key subject topic. It involves understanding underlying principles, step-by-step logic, and real-world application.\n2. **Key Takeaway**: Breaking down complex topics into smaller components makes them easier to master.\n3. **Study Strategy**: Review class notes, practice sample questions, or ask your educator (Mrs. Sharma / Dr. Thorne) for tailored guidance.\n\nNeed further clarification on this topic? Feel free to ask a follow-up question!`,
       suggestedActions: [`More on ${topicCapitalized || 'this topic'}`, 'Contact Educator', 'Take Practice Quiz']
     };
-  }
-}
-
-// ---------------------------------------------------------------------------
-// 8. PROFILE & USER MANAGEMENT API
-// ---------------------------------------------------------------------------
-
-export async function updateProfileApi(updates: Partial<UserProfile>): Promise<UserProfile> {
-  try {
-    const data = await apiFetch<UserProfile>('/users/me', {
-      method: 'PATCH',
-      body: JSON.stringify(updates)
-    });
-    return data;
-  } catch {
-    // Local Dev Fallback: returns updated payload
-    return updates as UserProfile;
-  }
-}
-
-export async function changePasswordApi(currentPassword: string, newPassword: string): Promise<void> {
-  try {
-    await apiFetch('/auth/change-password', {
-      method: 'POST',
-      body: JSON.stringify({ currentPassword, newPassword })
-    });
-  } catch (err: any) {
-    // If backend is not running, let caller handle fallback or re-throw
-    console.warn('[changePasswordApi] Backend unavailable, fallback active');
-    throw err;
   }
 }

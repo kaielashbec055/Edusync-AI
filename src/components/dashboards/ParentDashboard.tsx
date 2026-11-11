@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
-import { useLanguage } from '../../context/LanguageContext';
 import { getParentChildrenApi } from '../../services/api';
 import { ChildInfo } from '../../types';
 import {
@@ -24,7 +23,6 @@ import {
 
 export const ParentDashboard: React.FC = () => {
   const { user, selectedChild, setSelectedChild, childrenList, setActiveTab } = useApp();
-  const { t } = useLanguage();
   const [showFeeModal, setShowFeeModal] = useState(false);
   const [feePaidSuccess, setFeePaidSuccess] = useState(false);
   const [children, setChildren] = useState<ChildInfo[]>(childrenList);
@@ -71,9 +69,9 @@ export const ParentDashboard: React.FC = () => {
       <div className="p-6 md:p-8 rounded-3xl purple-gradient-hero text-white shadow-xl glow-purple flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <span className="px-3.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-black flex items-center gap-1.5 w-fit border border-white/20">
-            <Shield className="w-3.5 h-3.5 text-amber-300" /> Parent Portal • {user.name}
+            <Shield className="w-3.5 h-3.5 text-amber-300" /> Parent Portal • Priya Sharma
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black">{t('dash.goodMorning', 'Good Morning')}, {user.name} 👋</h1>
+          <h1 className="text-2xl sm:text-3xl font-black">Good Morning, Priya Sharma 👋</h1>
           <p className="text-purple-100 text-xs sm:text-sm font-medium max-w-xl">
             Real-time telemetry for <strong className="text-white font-extrabold">{selectedChild.name} ({selectedChild.grade})</strong>.
           </p>

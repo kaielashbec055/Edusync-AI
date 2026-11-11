@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { UserRole } from '../../types';
 import { clearTokens } from '../../services/api';
-import { useLanguage } from '../../context/LanguageContext';
 import {
   Bell,
   Search,
@@ -17,17 +16,13 @@ import {
   BookOpen,
   GraduationCap,
   School,
-  Sparkles,
-  Settings,
-  Globe
+  Sparkles
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { user, role, setRole, activeTab, setActiveTab, notifications, markNotificationRead, setIsSosModalOpen, setIsAuthModalOpen, setIsLandingPage, logoutAccount } = useApp();
-  const { language, setLanguage, currentLanguageMeta, availableLanguages, t } = useLanguage();
+  const { user, role, setRole, notifications, markNotificationRead, setIsSosModalOpen, setIsAuthModalOpen, setIsLandingPage } = useApp();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -78,7 +73,7 @@ export const Navbar: React.FC = () => {
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-purple-400" />
             <input
               type="text"
-              placeholder={t('nav.searchPlaceholder', 'Search subjects, bus location, timetable, assignments...')}
+              placeholder="Search subjects, bus location, timetable, assignments..."
               className="w-full pl-10 pr-4 py-2 bg-purple-50/60 border border-purple-100 rounded-2xl text-sm text-[#1E1B4B] placeholder-purple-400 focus:outline-none focus:bg-white focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 transition-all"
             />
           </div>
@@ -94,88 +89,7 @@ export const Navbar: React.FC = () => {
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-rose-50 hover:bg-rose-100 text-[#EF4444] border border-rose-200 text-xs font-extrabold transition-all shadow-sm group cursor-pointer"
           >
             <AlertTriangle className="w-4 h-4 text-[#EF4444] group-hover:rotate-12 transition-transform" />
-            <span className="hidden sm:inline">{t('nav.sos', 'EMERGENCY SOS')}</span>
-          </motion.button>
-
-          {/* Language Selector Dropdown */}
-          <div className="relative">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setShowLanguageMenu(!showLanguageMenu);
-                setShowNotifications(false);
-                setShowProfileMenu(false);
-              }}
-              className="p-2.5 rounded-2xl bg-purple-50 hover:bg-purple-100/80 text-[#7C3AED] border border-purple-200 flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Select Language"
-            >
-              <Globe className="w-4 h-4 text-[#7C3AED]" />
-              <span className="text-xs font-black hidden md:inline">{currentLanguageMeta.flag} {currentLanguageMeta.nativeName}</span>
-              <ChevronDown className="w-3 h-3 text-purple-400" />
-            </motion.button>
-
-            <AnimatePresence>
-              {showLanguageMenu && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-52 bg-white/95 backdrop-blur-xl border border-purple-100 rounded-3xl shadow-xl z-50 p-2 space-y-1 overflow-hidden"
-                >
-                  <p className="text-[10px] font-black uppercase text-purple-900 px-3 py-1.5 tracking-wider border-b border-purple-50">
-                    Language / భాష / भाषा
-                  </p>
-                  {availableLanguages.map((l) => (
-                    <button
-                      key={l.code}
-                      onClick={() => {
-                        setLanguage(l.code);
-                        setShowLanguageMenu(false);
-                      }}
-                      className={`w-full text-left p-2.5 rounded-2xl flex items-center justify-between text-xs transition-all cursor-pointer ${
-                        language === l.code
-                          ? 'bg-purple-100 border border-purple-200 font-black text-[#7C3AED]'
-                          : 'hover:bg-purple-50 text-[#1E1B4B] font-bold'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-base">{l.flag}</span>
-                        <div>
-                          <p className="leading-tight">{l.nativeName}</p>
-                          <p className="text-[10px] text-purple-600 font-medium">{l.name}</p>
-                        </div>
-                      </div>
-                      {language === l.code && (
-                        <span className="w-2 h-2 rounded-full bg-[#7C3AED]" />
-                      )}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Settings Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setActiveTab('settings');
-              setShowNotifications(false);
-              setShowProfileMenu(false);
-              setShowLanguageMenu(false);
-            }}
-            className={`p-2.5 rounded-2xl border transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeTab === 'settings'
-                ? 'bg-[#7C3AED] text-white border-[#7C3AED] shadow-sm'
-                : 'bg-purple-50 hover:bg-purple-100/80 text-[#7C3AED] border-purple-200'
-            }`}
-            title="Settings & Profile"
-          >
-            <Settings className="w-4 h-4" />
-            <span className="hidden md:inline text-xs font-extrabold">{t('nav.settings', 'Settings')}</span>
+            <span className="hidden sm:inline">EMERGENCY SOS</span>
           </motion.button>
 
           {/* Notifications Dropdown */}
@@ -293,7 +207,7 @@ export const Navbar: React.FC = () => {
                   {/* Switch User Portal Section */}
                   <div className="space-y-1.5 pt-1 border-t border-purple-100">
                     <p className="text-[10px] font-black uppercase text-purple-900 px-1 tracking-wider">
-                      {t('nav.switchPortal', 'Switch User Portal')}
+                      Switch User Portal
                     </p>
 
                     <div className="space-y-1">
@@ -332,26 +246,17 @@ export const Navbar: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-purple-100 space-y-1">
+                  <div className="pt-2 border-t border-purple-100">
                     <button
                       onClick={() => {
-                        setActiveTab('settings');
+                        clearTokens();
+                        setIsLandingPage(true);
                         setShowProfileMenu(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-xs font-extrabold text-[#7C3AED] hover:bg-purple-50 rounded-2xl flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <Settings className="w-4 h-4 text-[#7C3AED]" />
-                      <span>{t('nav.settingsAndProfile', 'Account Settings & Profile')}</span>
-                    </button>
-                    <button
-                      onClick={async () => {
-                        setShowProfileMenu(false);
-                        await logoutAccount();
                       }}
                       className="w-full text-left px-3 py-2 text-xs font-extrabold text-rose-600 hover:bg-rose-50 rounded-2xl flex items-center gap-2 transition-colors cursor-pointer"
                     >
                       <LogIn className="w-4 h-4 text-rose-500" />
-                      <span>{t('nav.signOut', 'Sign Out Account')}</span>
+                      <span>Sign Out Account</span>
                     </button>
                   </div>
                 </motion.div>
