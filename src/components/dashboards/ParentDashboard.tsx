@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { getParentChildrenApi } from '../../services/api';
 import { ChildInfo } from '../../types';
+import { ParentChildWellnessReport } from '../modules/wellness/ParentChildWellnessReport';
+import { ParentAcademicProgressReport } from '../modules/academics/ParentAcademicProgressReport';
 import {
   Bus,
   CreditCard,
@@ -112,37 +114,52 @@ export const ParentDashboard: React.FC = () => {
           <p className="text-[11px] text-emerald-700 font-bold mt-1">✓ On-Time Arrival 08:15 AM</p>
         </div>
 
-        <div className="p-5 rounded-3xl clay-card">
+        <div 
+          onClick={() => setActiveTab('academic_report')}
+          className="p-5 rounded-3xl clay-card cursor-pointer hover:border-purple-300 transition-all group"
+          title="Click to view full Academic Progress Report"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-extrabold text-purple-700">Homework</span>
-            <div className="p-2 rounded-2xl bg-amber-100 text-amber-700 font-bold text-xs">
-              3 Tasks
+            <div className="p-1.5 px-2.5 rounded-xl bg-amber-100 text-amber-800 font-black text-[10px] group-hover:bg-[#7C3AED] group-hover:text-white transition-colors">
+              Progress Dossier →
             </div>
           </div>
           <p className="text-2xl font-black text-[#1E1B4B] mt-2">3 Pending</p>
-          <p className="text-[11px] text-amber-700 font-bold mt-1">Due 28 May</p>
+          <p className="text-[11px] text-amber-700 font-bold mt-1">Due 28 May • Click to review</p>
         </div>
 
-        <div className="p-5 rounded-3xl clay-card">
+        <div 
+          onClick={() => setActiveTab('wellness')}
+          className="p-5 rounded-3xl clay-card cursor-pointer hover:border-purple-300 transition-all group"
+          title="Click to view Child Wellness Diagnostic Report"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-extrabold text-purple-700">Child's Mood</span>
-            <div className="p-2 rounded-2xl bg-purple-100 text-[#7C3AED] font-bold text-xs">
-              😊 Happy
+            <div className="p-1.5 px-2.5 rounded-xl bg-purple-100 text-[#7C3AED] font-black text-[10px] group-hover:bg-[#7C3AED] group-hover:text-white transition-colors">
+              Wellness Report →
             </div>
           </div>
-          <p className="text-2xl font-black text-[#1E1B4B] mt-2">Feeling Happy</p>
-          <p className="text-[11px] text-purple-700 font-bold mt-1">Reported 08:15 AM</p>
+          <p className="text-2xl font-black text-[#1E1B4B] mt-2">😊 Happy</p>
+          <p className="text-[11px] text-purple-700 font-bold mt-1">Click for Emotional Diagnostics</p>
         </div>
 
-        <div className="p-5 rounded-3xl clay-card">
+        <div 
+          onClick={() => setActiveTab('fees')}
+          className="p-5 rounded-3xl clay-card cursor-pointer hover:border-purple-300 transition-all group"
+        >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-purple-700">Term Fee</span>
-            <div className="p-2 rounded-2xl bg-indigo-100 text-indigo-700 font-bold text-xs">
-              $450
+            <span className="text-xs font-extrabold text-purple-700">Fee Status ({selectedChild.grade})</span>
+            <div className="p-2 rounded-2xl bg-indigo-100 text-indigo-700 font-bold text-xs group-hover:bg-[#7C3AED] group-hover:text-white transition-colors">
+              Fee Portal →
             </div>
           </div>
-          <p className="text-2xl font-black text-[#1E1B4B] mt-2">$450 Due</p>
-          <p className="text-[11px] text-indigo-700 font-bold mt-1">Term II Tuition</p>
+          <p className="text-2xl font-black text-[#1E1B4B] mt-2">
+            {selectedChild.grade?.includes('8') ? '$1,050 Due' : selectedChild.grade?.includes('5') ? '$880 Due' : '$630 Due'}
+          </p>
+          <p className="text-[11px] text-indigo-700 font-bold mt-1">
+            {selectedChild.grade} Standard Schedule • View Receipts
+          </p>
         </div>
       </div>
 
@@ -220,6 +237,11 @@ export const ParentDashboard: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Embedded Central Academic Progress Report Section */}
+      <div className="pt-2">
+        <ParentAcademicProgressReport />
       </div>
     </motion.div>
   );

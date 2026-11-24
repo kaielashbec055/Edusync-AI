@@ -92,7 +92,7 @@ export const translations: Record<SupportedLanguage, Record<string, string>> = {
     'settings.title': 'Account & Security Settings',
     'settings.subtitle': 'Manage your personal credentials, profile information, and role-based access.',
     'settings.portalBadge': 'Portal Settings',
-    'settings.persona': 'Current Persona',
+    'settings.persona': 'Current Person',
     'settings.fullName': 'Full Name',
     'settings.email': 'Email Address',
     'settings.roleType': 'Role Type',

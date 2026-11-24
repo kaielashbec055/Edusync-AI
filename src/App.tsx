@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppProvider, useApp } from './context/AppContext';
 import { ChatProvider } from './context/ChatContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { StudentDashboard } from './components/dashboards/StudentDashboard';
@@ -18,15 +19,41 @@ import { AuthModal } from './components/modules/landing/AuthModal';
 import { EmergencySOSModal } from './components/modules/safety/EmergencySOSModal';
 import { FloatingAIAssistant } from './components/ai/FloatingAIAssistant';
 import { GamifiedLearning } from './components/modules/learning/GamifiedLearning';
+import { ProfileCreationPage } from './components/profile/ProfileCreationPage';
+import { ProfileViewPage } from './components/profile/ProfileViewPage';
+import { LanguageSelectionScreen } from './components/profile/LanguageSelectionScreen';
+import { SettingsPage } from './components/settings/SettingsPage';
+import { FeePortalAndReceipts } from './components/fees/FeePortalAndReceipts';
+import { HomeworkAndAssessments } from './components/modules/learning/HomeworkAndAssessments';
+import { ParentAcademicProgressReport } from './components/modules/academics/ParentAcademicProgressReport';
+import { ParentChildWellnessReport } from './components/modules/wellness/ParentChildWellnessReport';
 
 const AppContent: React.FC = () => {
-  const { role, activeTab, isLandingPage } = useApp();
+  const { role, activeTab, isLandingPage, isProfileSetupActive, isLanguageSetupActive } = useApp();
 
   if (isLandingPage) {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
         <LandingPage />
         <AuthModal />
+        <FloatingAIAssistant />
+      </div>
+    );
+  }
+
+  if (isProfileSetupActive) {
+    return (
+      <div className="min-h-screen bg-[#FAF7FF] text-[#1E1B4B] flex flex-col">
+        <ProfileCreationPage />
+        <FloatingAIAssistant />
+      </div>
+    );
+  }
+
+  if (isLanguageSetupActive) {
+    return (
+      <div className="min-h-screen bg-[#FAF7FF] text-[#1E1B4B] flex flex-col">
+        <LanguageSelectionScreen />
         <FloatingAIAssistant />
       </div>
     );
@@ -41,6 +68,21 @@ const AppContent: React.FC = () => {
         if (role === 'admin') return <AdminDashboard />;
         return <StudentDashboard />;
 
+      case 'profile':
+        return <ProfileViewPage />;
+
+      case 'settings':
+        return <SettingsPage />;
+
+      case 'homework_tests':
+        return <HomeworkAndAssessments />;
+
+      case 'academic_report':
+        return <ParentAcademicProgressReport />;
+
+      case 'fees':
+        return <FeePortalAndReceipts />;
+
       case 'academics':
       case 'achievements':
         return <GamifiedLearning />;
@@ -54,6 +96,7 @@ const AppContent: React.FC = () => {
         );
 
       case 'wellness':
+        if (role === 'parent') return <ParentChildWellnessReport />;
         return <WellnessDashboard />;
 
       case 'communication':
@@ -63,9 +106,6 @@ const AppContent: React.FC = () => {
             <Announcements />
           </div>
         );
-
-      case 'fees':
-        return <ParentDashboard />;
 
       case 'class_mgmt':
       case 'attendance_mgr':
@@ -118,9 +158,11 @@ const AppContent: React.FC = () => {
 export function App() {
   return (
     <AppProvider>
-      <ChatProvider>
-        <AppContent />
-      </ChatProvider>
+      <LanguageProvider>
+        <ChatProvider>
+          <AppContent />
+        </ChatProvider>
+      </LanguageProvider>
     </AppProvider>
   );
 }

@@ -13,30 +13,38 @@ import {
   AlertOctagon,
   ChevronRight,
   Bus,
-  CheckSquare
+  CheckSquare,
+  User,
+  Settings
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
-  const { role, setRole, activeTab, setActiveTab, setIsSosModalOpen, setIsLandingPage } = useApp();
+  const { role, activeTab, setActiveTab, setIsSosModalOpen } = useApp();
 
   const getNavItems = () => {
     switch (role) {
       case 'student':
         return [
           { id: 'dashboard', label: 'Student Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'homework_tests', label: 'Homework & Tests', icon: <BookOpen className="w-4 h-4" />, badge: '3 PENDING' },
           { id: 'achievements', label: 'Gamified Quizzes & Badges', icon: <Award className="w-4 h-4" />, badge: 'GAME' },
           { id: 'safety', label: 'Safety & Bus Tracker', icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
           { id: 'wellness', label: 'Mental Wellness', icon: <HeartPulse className="w-4 h-4" />, badge: 'AI' },
-          { id: 'communication', label: 'Messages & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
+          { id: 'communication', label: 'Messages & Circulars', icon: <MessageSquare className="w-4 h-4" /> },
+          { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
+          { id: 'profile', label: 'My Profile', icon: <User className="w-4 h-4" /> }
         ];
 
       case 'parent':
         return [
           { id: 'dashboard', label: 'Parent Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+          { id: 'academic_report', label: 'Academic Progress Report', icon: <Award className="w-4 h-4" /> },
+          { id: 'fees', label: 'Fee Portal & Receipts', icon: <CreditCard className="w-4 h-4" /> },
           { id: 'safety', label: 'Child Safety & Bus GPS', icon: <Bus className="w-4 h-4" />, badge: 'LIVE' },
           { id: 'wellness', label: 'Child Wellness Pulse', icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'fees', label: 'Fee Portal & Receipts', icon: <CreditCard className="w-4 h-4" /> },
-          { id: 'communication', label: 'Teacher Connect & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
+          { id: 'communication', label: 'Teacher Connect & Circulars', icon: <MessageSquare className="w-4 h-4" /> },
+          { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
+          { id: 'profile', label: 'My Profile', icon: <User className="w-4 h-4" /> }
         ];
 
       case 'teacher':
@@ -45,7 +53,9 @@ export const Sidebar: React.FC = () => {
           { id: 'attendance_mgr', label: 'Attendance Marker', icon: <CheckSquare className="w-4 h-4" /> },
           { id: 'safety', label: 'Gate Pass & Transport', icon: <Shield className="w-4 h-4" /> },
           { id: 'wellness', label: 'Counselor & Wellness Flags', icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'communication', label: 'Parent Chat & Circulars', icon: <MessageSquare className="w-4 h-4" /> }
+          { id: 'communication', label: 'Parent Chat & Circulars', icon: <MessageSquare className="w-4 h-4" /> },
+          { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
+          { id: 'profile', label: 'My Profile', icon: <User className="w-4 h-4" /> }
         ];
 
       case 'admin':
@@ -53,7 +63,9 @@ export const Sidebar: React.FC = () => {
           { id: 'dashboard', label: 'Admin Command Center', icon: <LayoutDashboard className="w-4 h-4" /> },
           { id: 'safety', label: 'Transport Fleet Monitor', icon: <Bus className="w-4 h-4" /> },
           { id: 'wellness', label: 'School-Wide Mood Trends', icon: <HeartPulse className="w-4 h-4" /> },
-          { id: 'communication', label: 'Broadcast Circulars', icon: <MessageSquare className="w-4 h-4" /> }
+          { id: 'communication', label: 'Broadcast Circulars', icon: <MessageSquare className="w-4 h-4" /> },
+          { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
+          { id: 'profile', label: 'My Profile', icon: <User className="w-4 h-4" /> }
         ];
 
       default:
@@ -65,56 +77,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside className="w-64 bg-white/70 backdrop-blur-xl border-r border-slate-200/80 hidden lg:flex flex-col justify-between p-4 sticky top-[65px] h-[calc(100vh-65px)] shadow-sm">
-      <div className="space-y-6">
-        {/* Role Identity Card & Persona Switcher */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="p-4 rounded-3xl bg-purple-50/80 border border-purple-100 shadow-sm space-y-3"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[#7C3AED] to-[#9333EA] text-white flex items-center justify-center font-black text-xs shadow-sm">
-              {role === 'student' ? 'ST' : role === 'parent' ? 'PR' : role === 'teacher' ? 'TC' : 'AD'}
-            </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-wider text-purple-900">Current Portal</p>
-              <h4 className="text-xs font-black text-[#1E1B4B] capitalize">{role} Ecosystem</h4>
-            </div>
-          </div>
-
-          {/* Quick Switcher Pills */}
-          <div className="pt-2 border-t border-purple-100/80">
-            <p className="text-[9px] font-black uppercase text-purple-900 mb-1.5">Switch Persona Portal:</p>
-            <div className="grid grid-cols-2 gap-1">
-              {[
-                { key: 'student', label: 'Student' },
-                { key: 'parent', label: 'Parent' },
-                { key: 'teacher', label: 'Teacher' },
-                { key: 'admin', label: 'Admin' }
-              ].map((r) => {
-                const isActive = role === r.key;
-                return (
-                  <button
-                    key={r.key}
-                    onClick={() => {
-                      setIsLandingPage(false);
-                      setRole(r.key as any);
-                    }}
-                    className={`py-1 px-2 rounded-xl text-[10px] font-extrabold transition-all cursor-pointer text-center ${
-                      isActive
-                        ? 'bg-[#7C3AED] text-white shadow-xs'
-                        : 'bg-white text-purple-900 hover:bg-purple-100 border border-purple-200'
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
-
+      <div className="space-y-4">
         {/* Navigation Section */}
         <div className="space-y-1.5">
           <p className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">

@@ -45,7 +45,7 @@ export const RoleSwitcherBar: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5 animate-pulse text-[#7C3AED]" /> EDUSYNC ROLE SWITCHER
           </span>
           <span className="text-purple-900/80 font-medium hidden sm:inline">
-            Switch persona to explore live portals:
+            Switch person to explore live portals:
           </span>
         </div>
 

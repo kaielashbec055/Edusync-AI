@@ -31,7 +31,7 @@ export const ChatModule: React.FC = () => {
         senderName: 'EduPulse AI Agent',
         senderAvatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=80',
         role: 'assistant',
-        text: `Greetings ${user.name}! I am your assigned EduPulse AI Agent for the ${role} persona. Send me any doubts, schedule questions, or campus inquiries for immediate help.`,
+        text: `Greetings ${user.name}! I am your assigned EduPulse AI Agent for the ${role} person. Send me any doubts, schedule questions, or campus inquiries for immediate help.`,
         timestamp: 'Just now'
       }
     ]

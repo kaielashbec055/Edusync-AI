@@ -27,7 +27,21 @@ import { useLanguage } from '../../context/LanguageContext';
 
 export const SettingsPage: React.FC = () => {
   const { user, role, updateUserProfile, changeUserPassword } = useApp();
-  const { language, setLanguage, availableLanguages, t } = useLanguage();
+  
+  let language = 'en';
+  let setLanguage: (lang: any) => void = () => {};
+  let availableLanguages: any[] = [];
+  let t = (_key: string, fallback?: string) => fallback || _key;
+
+  try {
+    const lang = useLanguage();
+    language = lang.language;
+    setLanguage = lang.setLanguage;
+    availableLanguages = lang.availableLanguages;
+    t = lang.t;
+  } catch {
+    // Graceful fallback if used outside LanguageProvider
+  }
 
   // Profile Form States
   const [name, setName] = useState(user.name);
@@ -50,7 +64,7 @@ export const SettingsPage: React.FC = () => {
   // Password Strength Evaluation
   const strength = evaluatePasswordStrength(newPassword);
 
-  // Sync state if user changes or switches persona
+  // Sync state if user changes or switches person
   useEffect(() => {
     setName(user.name);
     setGradeOrSubject(user.gradeOrSubject || '');
@@ -257,7 +271,7 @@ export const SettingsPage: React.FC = () => {
                  role === 'parent' ? <User className="w-6 h-6" /> : <School className="w-6 h-6" />}
               </div>
               <div>
-                <h3 className="text-sm font-black text-[#1E1B4B]">{t('settings.persona', 'Current Persona')}</h3>
+                <h3 className="text-sm font-black text-[#1E1B4B]">{t('settings.persona', 'Current Person')}</h3>
                 <p className="text-xs font-extrabold text-[#7C3AED] capitalize">{role} Account</p>
               </div>
             </div>

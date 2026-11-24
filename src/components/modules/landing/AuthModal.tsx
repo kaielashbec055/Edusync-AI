@@ -10,11 +10,15 @@ export const AuthModal: React.FC = () => {
     setIsAuthModalOpen,
     setRole,
     setIsLandingPage,
+    setActiveTab,
     authMode,
     setAuthMode,
     authTargetRole,
     setAuthTargetRole,
-    addNotification
+    addNotification,
+    setIsProfileSetupActive,
+    hasCompletedProfile,
+    skipToDashboard
   } = useApp();
 
   const [selectedRole, setSelectedRole] = useState<UserRole>('student');
@@ -38,37 +42,43 @@ export const AuthModal: React.FC = () => {
 
     const activeRole = selectedRole;
     const roleCapitalized = activeRole.charAt(0).toUpperCase() + activeRole.slice(1);
+    const alreadyCreated = hasCompletedProfile[activeRole];
+
     const toastMessage = isRegister
-      ? `${roleCapitalized} Account Created Successfully!`
-      : `${roleCapitalized} Login Successful! Redirecting to Dashboard...`;
+      ? `${roleCapitalized} Account Created! Opening Profile Setup...`
+      : alreadyCreated
+      ? `${roleCapitalized} Login Successful! Welcome back.`
+      : `${roleCapitalized} Login Successful! Opening Profile Setup...`;
 
     setSuccessToast(toastMessage);
 
     // Notify app notifications stream
     addNotification({
       title: `${roleCapitalized} Authentication`,
-      message: `${roleCapitalized} persona authenticated successfully.`,
+      message: `${roleCapitalized} person authenticated successfully.`,
       type: 'wellness'
     });
 
     try {
-      const targetEmail = email || (activeRole === 'student' ? 'alex.vance@edupulse.edu' : activeRole === 'parent' ? 'sarah.vance@gmail.com' : activeRole === 'teacher' ? 'm.thorne@edupulse.edu' : 'principal@edupulse.edu');
-      const res = await loginApi(targetEmail);
-      if (res && res.user) {
-        setRole(res.user.role || activeRole);
-      } else {
-        setRole(activeRole);
-      }
+      const targetEmail = email || (activeRole === 'student' ? 'aarav.sharma@edupulse.edu' : activeRole === 'parent' ? 'priya.sharma@gmail.com' : activeRole === 'teacher' ? 'a.sharma@edupulse.edu' : 'principal@edupulse.edu');
+      await loginApi(targetEmail, undefined, activeRole);
     } catch {
-      setRole(activeRole);
+      // Offline fallback
     } finally {
+      setRole(activeRole);
       setTimeout(() => {
         setLoading(false);
         setSuccessToast(null);
         setAuthTargetRole(null);
         setIsLandingPage(false);
+        if (alreadyCreated && !isRegister) {
+          setIsProfileSetupActive(false);
+          setActiveTab('dashboard');
+        } else {
+          setIsProfileSetupActive(true);
+        }
         setIsAuthModalOpen(false);
-      }, 900);
+      }, 700);
     }
   };
 
@@ -170,7 +180,7 @@ export const AuthModal: React.FC = () => {
               <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-purple-400" />
               <input
                 type="email"
-                value={email || (selectedRole === 'student' ? 'alex.vance@edupulse.edu' : selectedRole === 'parent' ? 'sarah.vance@gmail.com' : selectedRole === 'teacher' ? 'm.thorne@edupulse.edu' : 'principal@edupulse.edu')}
+                value={email || (selectedRole === 'student' ? 'aarav.sharma@edupulse.edu' : selectedRole === 'parent' ? 'priya.sharma@gmail.com' : selectedRole === 'teacher' ? 'a.sharma@edupulse.edu' : 'principal@edupulse.edu')}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-3 py-2.5 bg-purple-50/50 border border-purple-100 rounded-2xl text-[#1E1B4B] font-medium focus:outline-none focus:border-[#7C3AED]"
                 required

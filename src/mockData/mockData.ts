@@ -2,6 +2,9 @@ import {
   UserProfile,
   SubjectGrade,
   Assignment,
+  TestAssessment,
+  TeacherFeedbackItem,
+  WellnessDiagnosticEntry,
   AchievementBadge,
   MoodEntry,
   ChildInfo,
@@ -65,40 +68,255 @@ export const MOCK_STUDENT_SUBJECTS: SubjectGrade[] = [
 export const MOCK_ASSIGNMENTS: Assignment[] = [
   {
     id: 'asg_01',
-    title: 'Quantum Wave Functions Problem Set',
-    subject: 'Advanced Physics',
-    dueDate: '2026-07-31',
+    title: 'Newton\'s Laws & Force Equilibrium Problem Set',
+    subject: 'Science (Physics)',
+    teacherName: 'Dr. Marcus Thorne',
+    assignedDate: '2026-05-18',
+    dueDate: '2026-05-25',
+    instructions: 'Solve problems 1 to 15 from Chapter 4. Draw free-body force diagrams for each question clearly showing normal and gravitational components.',
     status: 'pending',
     maxScore: 100,
     priority: 'high'
   },
   {
     id: 'asg_02',
-    title: 'Sorting Algorithms Implementation',
-    subject: 'Computer Science',
-    dueDate: '2026-08-02',
+    title: 'Linear Equations & Graphing Worksheet #3',
+    subject: 'Mathematics',
+    teacherName: 'Mrs. Rebecca Sterling',
+    assignedDate: '2026-05-15',
+    dueDate: '2026-05-22',
+    instructions: 'Plot lines using slope-intercept form y = mx + c and find intersection points algebraically.',
     status: 'submitted',
-    score: 98,
+    score: 95,
     maxScore: 100,
-    priority: 'medium'
+    priority: 'medium',
+    submittedAt: '2026-05-21',
+    studentSubmission: 'Completed all graphs on grid paper with step-by-step algebra.'
   },
   {
     id: 'asg_03',
     title: 'Industrial Revolution Analytical Essay',
-    subject: 'World History',
-    dueDate: '2026-08-04',
+    subject: 'Social Studies',
+    teacherName: 'Dr. Harrison Ford',
+    assignedDate: '2026-05-17',
+    dueDate: '2026-05-26',
+    instructions: 'Write a 400-word analysis on the socioeconomic impact of steam engine mechanization on agrarian communities.',
     status: 'pending',
     maxScore: 50,
     priority: 'medium'
   },
   {
     id: 'asg_04',
-    title: 'Organic Chemistry Lab Report #4',
-    subject: 'Chemistry',
-    dueDate: '2026-08-05',
+    title: 'Chemical Reactions & Balancing Equations',
+    subject: 'Science (Chemistry)',
+    teacherName: 'Dr. Elena Rostova',
+    assignedDate: '2026-05-19',
+    dueDate: '2026-05-27',
+    instructions: 'Complete the balancing exercises for redox and neutralization reactions in Worksheet B.',
     status: 'pending',
-    maxScore: 100,
+    maxScore: 50,
     priority: 'low'
+  },
+  {
+    id: 'asg_05',
+    title: 'Shakespearean Sonnets Paraphrase & Themes',
+    subject: 'English Literature',
+    teacherName: 'Ms. Clara Bennett',
+    assignedDate: '2026-05-10',
+    dueDate: '2026-05-16',
+    instructions: 'Analyze Sonnet 18 meter, rhyme scheme, and imagery metaphor of eternal summer.',
+    status: 'overdue',
+    maxScore: 40,
+    priority: 'high'
+  }
+];
+
+export const MOCK_TESTS: TestAssessment[] = [
+  {
+    id: 'tst_01',
+    title: 'Periodic Unit Assessment 2 - Algebra & Geometry',
+    category: 'Unit Test',
+    subject: 'Mathematics',
+    teacherName: 'Mrs. Rebecca Sterling',
+    testDate: '2026-05-12',
+    testTime: '09:00 AM - 10:30 AM',
+    duration: '90 Mins',
+    maxMarks: 50,
+    syllabus: 'Quadratic equations, Polynomial division, Similar triangles & Pythagoras theorem',
+    status: 'completed',
+    isPublished: true,
+    obtainedMarks: 47,
+    feedback: 'Outstanding mastery in factoring quadratics and neat geometric proofs.'
+  },
+  {
+    id: 'tst_02',
+    title: 'Weekly Physics Concept Check: Gravitation & Motion',
+    category: 'Weekly Test',
+    subject: 'Science (Physics)',
+    teacherName: 'Dr. Marcus Thorne',
+    testDate: '2026-05-16',
+    testTime: '11:15 AM - 12:00 PM',
+    duration: '45 Mins',
+    maxMarks: 25,
+    syllabus: 'Universal law of gravitation, Acceleration due to gravity (g), and Free fall kinematics',
+    status: 'completed',
+    isPublished: true,
+    obtainedMarks: 21,
+    feedback: 'Good conceptual grasp. Double-check numerical unit conversions (m/s²).'
+  },
+  {
+    id: 'tst_03',
+    title: 'Home Test #1: World Geography & Trade Routes',
+    category: 'Home Test',
+    subject: 'Social Studies',
+    teacherName: 'Dr. Harrison Ford',
+    testDate: '2026-05-22',
+    testTime: 'Take-home assessment (2 hours limit)',
+    duration: '120 Mins',
+    maxMarks: 40,
+    syllabus: 'Major maritime shipping straits, Silk Route historical impacts, and modern trade corridors',
+    status: 'completed',
+    isPublished: true,
+    obtainedMarks: 36,
+    feedback: 'Well-researched map annotations and clear trade treaty comparisons.'
+  },
+  {
+    id: 'tst_04',
+    title: 'Class Test: English Grammar & Reading Comprehension',
+    category: 'Class Test',
+    subject: 'English Literature',
+    teacherName: 'Ms. Clara Bennett',
+    testDate: '2026-05-24',
+    testTime: '10:00 AM - 10:45 AM',
+    duration: '45 Mins',
+    maxMarks: 20,
+    syllabus: 'Direct and indirect speech conversion, clauses, unseen passage comprehension',
+    status: 'completed',
+    isPublished: false,
+    obtainedMarks: undefined,
+    feedback: 'Pending paper evaluation by Ms. Clara Bennett.'
+  },
+  {
+    id: 'tst_05',
+    title: 'Monthly Term Comprehensive Assessment - Science',
+    category: 'Monthly Test',
+    subject: 'Science (Physics & Chem)',
+    teacherName: 'Dr. Marcus Thorne',
+    testDate: '2026-05-30',
+    testTime: '09:00 AM - 11:00 AM',
+    duration: '120 Mins',
+    maxMarks: 80,
+    syllabus: 'Units 1-4: Mechanics, Wave Optics, Chemical bonding, Acids, Bases & Salts',
+    status: 'upcoming',
+    isPublished: false
+  },
+  {
+    id: 'tst_06',
+    title: 'Model Examination - Mathematics Board Prep',
+    category: 'Model Examination',
+    subject: 'Mathematics',
+    teacherName: 'Mrs. Rebecca Sterling',
+    testDate: '2026-06-08',
+    testTime: '09:00 AM - 12:00 PM',
+    duration: '180 Mins',
+    maxMarks: 100,
+    syllabus: 'Full Term Syllabus covering Number Systems, Algebra, Coordinate Geometry, Trigonometry',
+    status: 'upcoming',
+    isPublished: false
+  }
+];
+
+export const MOCK_TEACHER_FEEDBACK: TeacherFeedbackItem[] = [
+  {
+    id: 'fb_01',
+    subject: 'Mathematics',
+    teacherName: 'Mrs. Rebecca Sterling',
+    teacherAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    date: '2026-05-14',
+    remark: 'Aarav exhibits exceptional computational speed and algebraic clarity. Consistently completes worksheets ahead of time with zero calculation errors.',
+    strengthArea: 'Quadratic algebra, Graph plotting & Mental math',
+    areaOfImprovement: 'Needs to write out step-by-step theorem justifications for full geometry board marks.',
+    rating: 5
+  },
+  {
+    id: 'fb_02',
+    subject: 'Science (Physics)',
+    teacherName: 'Dr. Marcus Thorne',
+    teacherAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
+    date: '2026-05-18',
+    remark: 'Very curious and asks insightful conceptual questions during lab sessions. Had brief exam anxiety on Tuesday during numericals but bounced back quickly.',
+    strengthArea: 'Physical intuition, Lab apparatus setup & Experimental design',
+    areaOfImprovement: 'Multi-step kinematics numerical problems involving acceleration components.',
+    rating: 4
+  },
+  {
+    id: 'fb_03',
+    subject: 'English Literature',
+    teacherName: 'Ms. Clara Bennett',
+    teacherAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    date: '2026-05-12',
+    remark: 'Expressive vocabulary and thoughtful essay arguments. Homework submission was delayed this week due to science test preparation.',
+    strengthArea: 'Analytical essay prose, Reading speed & Class debates',
+    areaOfImprovement: 'Time management to avoid deadline clashes with STEM subjects.',
+    rating: 4
+  }
+];
+
+export const MOCK_WELLNESS_DIAGNOSTICS: WellnessDiagnosticEntry[] = [
+  {
+    id: 'wdiag_01',
+    date: '2026-05-24',
+    score: 4,
+    moodLabel: 'Happy & Motivated',
+    emoji: '😊',
+    primaryTrigger: 'Algebra Exam High Score',
+    symptoms: ['High focus', 'Energetic', 'Enthusiastic in class discussions'],
+    aiDiagnosticAssessment: 'Child felt validated and proud after receiving 47/50 on Unit Test 2. Academic self-efficacy is high.',
+    parentRecommendations: [
+      'Celebrate student achievement with verbal affirmation',
+      'Encourage regular sleeping schedule to sustain energy'
+    ]
+  },
+  {
+    id: 'wdiag_02',
+    date: '2026-05-22',
+    score: 2,
+    moodLabel: 'Stressed / Overwhelmed',
+    emoji: '😟',
+    primaryTrigger: 'Upcoming Physics Lab & Heavy Homework Load',
+    symptoms: ['Fatigue reported at 08:30 AM', 'Concentration dip during 4th period', 'Worry over numerical formulas'],
+    aiDiagnosticAssessment: 'Detected dual pressure: Physics problem set was due alongside Geography home test. Late-night study (slept only 5.5 hours) caused cognitive drain.',
+    parentRecommendations: [
+      'Help break homework assignments into 25-minute Pomodoro intervals',
+      'Enforce no-screen bedtime by 10:00 PM',
+      'Assure the student that questions can be reviewed with Dr. Thorne during office hours'
+    ]
+  },
+  {
+    id: 'wdiag_03',
+    date: '2026-05-20',
+    score: 5,
+    moodLabel: 'Ecstatic / Confident',
+    emoji: '🌟',
+    primaryTrigger: 'Robotics Team Project Victory',
+    symptoms: ['Joyful social engagement', 'Zero anxiety flags', 'On-time bus check-in'],
+    aiDiagnosticAssessment: 'Peer collaboration was highly invigorating. Active teamwork significantly buffers academic stress.',
+    parentRecommendations: [
+      'Encourage continuous participation in extracurricular clubs'
+    ]
+  },
+  {
+    id: 'wdiag_04',
+    date: '2026-05-18',
+    score: 3,
+    moodLabel: 'Calm & Steady',
+    emoji: '😐',
+    primaryTrigger: 'Routine Mid-week Schedule',
+    symptoms: ['Even emotional baseline', 'Completed all morning classes without incident'],
+    aiDiagnosticAssessment: 'Balanced emotional regulation across the school day.',
+    parentRecommendations: [
+      'Maintain daily hydration and healthy nutrition'
+    ]
   }
 ];
 

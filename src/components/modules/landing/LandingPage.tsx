@@ -118,7 +118,7 @@ export const LandingPage: React.FC = () => {
           Empowering students with level-up learning quests, AI Study Buddies, live bus GPS tracking, digital gate passes, and 24/7 mental wellness care.
         </motion.p>
 
-        {/* Action Buttons: Sign Up & Persona Live Demo */}
+        {/* Action Buttons: Sign Up & Person Live Demo */}
         <motion.div variants={itemVariants} className="pt-2 flex flex-wrap items-center justify-center gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -140,9 +140,9 @@ export const LandingPage: React.FC = () => {
           </button>
         </motion.div>
 
-        {/* Quick Persona Launch Buttons */}
+        {/* Quick Person Launch Buttons */}
         <motion.div variants={itemVariants} className="pt-4 space-y-3">
-          <p className="text-xs font-extrabold text-purple-600 uppercase tracking-wider">Select persona to test live portal:</p>
+          <p className="text-xs font-extrabold text-purple-600 uppercase tracking-wider">Select person to test live portal:</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {[
               { role: 'student', label: 'Student Portal (Level 5 Learner)', icon: <GraduationCap className="w-4 h-4 text-[#7C3AED]" /> },

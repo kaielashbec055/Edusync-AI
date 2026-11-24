@@ -92,20 +92,22 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 // 1. AUTH API
 // ---------------------------------------------------------------------------
 
-export async function loginApi(email: string, password?: string): Promise<{ user: UserProfile; accessToken: string }> {
+export async function loginApi(email: string, password?: string, role?: UserRole): Promise<{ user: UserProfile; accessToken: string }> {
   try {
     const data = await apiFetch<{ user: UserProfile; tokens: { accessToken: string; refreshToken: string } }>('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password: password || 'Password123!' })
+      body: JSON.stringify({ email, password: password || 'Password123!', role })
     });
     setAccessToken(data.tokens.accessToken);
     setRefreshToken(data.tokens.refreshToken);
     return { user: data.user, accessToken: data.tokens.accessToken };
   } catch {
     // Local Dev Fallback if backend server is not running
-    const roleKey: UserRole = email.includes('alex') ? 'student' :
-                            email.includes('sarah') ? 'parent' :
-                            email.includes('thorne') ? 'teacher' : 'admin';
+    const roleKey: UserRole = role || (
+      (email.includes('alex') || email.includes('aarav') || email.includes('student')) ? 'student' :
+      (email.includes('sarah') || email.includes('priya') || email.includes('parent')) ? 'parent' :
+      (email.includes('thorne') || email.includes('teacher') || email.includes('sharma')) ? 'teacher' : 'admin'
+    );
     const fallbackUser = MOCK_USERS[roleKey];
     setAccessToken('mock_access_token_' + roleKey);
     return { user: fallbackUser, accessToken: 'mock_access_token_' + roleKey };

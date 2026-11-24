@@ -66,7 +66,7 @@ export const FloatingAIAssistant: React.FC = () => {
                       24/7 ONLINE
                     </span>
                   </div>
-                  <p className="text-[10px] text-purple-800 font-semibold">Contextual guide for {role} persona</p>
+                  <p className="text-[10px] text-purple-800 font-semibold">Contextual guide for {role} person</p>
                 </div>
               </div>
 

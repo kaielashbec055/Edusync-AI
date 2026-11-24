@@ -13,27 +13,38 @@
 
 DEMO VIDEO LINK : https://drive.google.com/file/d/1Xbd5KgqhpMXlXjV4QaQ_L0top3oUjqRf/view?usp=sharing
 
+---
+
 ## 🚨 The Problem
 
 Traditional educational ERP systems suffer from several critical shortcomings:
-1. **Disconnected Personas & Siloed Communication**: Parents, students, teachers, and admins use separate fragmented tools or offline paper systems, creating communication delays and lack of transparency.
-2. **Student Disengagement & Academic Burnout**: Conventional learning platforms rely on static assignments and passive grading, failing to motivate young learners or detect early signs of stress and struggling.
+1. **Disconnected Persons & Siloed Communication**: Parents, students, teachers, and admins use separate fragmented tools or offline paper systems, creating communication delays and lack of transparency.
+2. **Student Disengagement & Homework Tracking Confusion**: Conventional learning platforms mix up homework with formal exams and lack clean submission tracking, overdue alerts, and direct upload capabilities.
 3. **Safety & Transport Anxiety**: Parents lack real-time visibility into their child's school bus location, trip status, or gate check-out validation.
-4. **Lack of Instant Doubt Resolution**: Students often get stuck during homework or quiz attempts with no immediate help available until the next school day.
+4. **Opaque Academic & Wellness Insights**: Parents rarely receive diagnostics explaining *why* their child feels down or early warnings on subject decline until report cards arrive months later.
+5. **Static Fee Portals**: Tuition fees don't adjust cleanly based on student standard/grade, complicating multi-child payments.
 
 ---
 
 ## 💡 The Proposed Solution: EduSync AI
 
-**EduSync AI** is a unified, full-stack, AI-driven School Enterprise Resource Planning (ERP) platform and student ecosystem designed to connect every stakeholder in real time. 
+**EduSync AI** is a unified, full-stack, AI-driven School Enterprise Resource Planning (ERP) platform and student ecosystem designed to connect every stakeholder in real time.
 
 ### Key Highlights & Innovations:
 - **Soft Lavender 3D Claymorphic UI**: Premium, responsive user experience optimized for desktop/tablet viewports.
-- **Gamified Quest Engine & XP Levels**: Level 5 Little Learner progression, streak flames, wrong attempt alerts (*"Learn and come!"*), and instant AI doubt clearing.
-- **24/7 Universal AI Study Buddy**: Embedded AI assistant tailored for every role (Student, Parent, Teacher, Admin).
+- **Role-Based Onboarding & Profile Creation**: Comprehensive profile setup for all 4 person types (Student, Parent, Teacher, Admin) with instant bypass for returning users (*"Already an existing user? Click here to enter Dashboard"*).
+- **Multi-Language Localization Engine**: Dedicated language onboarding screen and live settings language switcher supporting English, Telugu, Hindi, Tamil, and Malayalam with universal synchronization across all UI blocks.
+- **Student Dashboard — Dedicated Homework & Tests Columns**:
+  - **Homework Block**: Pending, submitted, and overdue homework lists, teacher details, due dates, and modal submission with file attachment upload.
+  - **Tests & Assessments Block**: Clean separation between homework and exams supporting Unit Tests, Home Tests, Class Tests, Weekly/Monthly Tests, Model Exams, and Internal Assessments with teacher publishing privacy controls.
+  - **Floating Pending Homework Window**: One-click floating modal launched directly from the top summary card.
+- **Parent Dashboard — Central Academic Progress Report & Wellness Telemetry**:
+  - **Academic Progress Dossier**: Homework completion percentages, subject-wise status, test trends, teacher remarks, parent notifications, and downloadable monthly PDF reports.
+  - **Child Wellness Diagnostic Report**: Root-cause analysis explaining emotional dips (triggers, symptoms, AI diagnostic assessments, and parent guidance recommendations).
+  - **Multi-Child Standard-Based Fee Portal & Receipts**: Dynamic standard-based fees (8th Std: $1,050, 5th Std: $880, 2nd Std: $630) with multi-child selector and printable official receipts.
+- **24/7 Universal AI Study Buddy**: Embedded AI assistant tailored for every person (Student, Parent, Teacher, Admin).
 - **Live Bus Telemetry GPS Tracking**: Real-time vehicle location, speed monitoring, ETA updates, and route timeline.
 - **Digital Gate Pass & Security**: QR-code validation for student checkout with instant parent push notification dispatch.
-- **Mental Wellness & Early Risk Detection**: Daily mood logger with emotion trends, guided breathing exercises, and AI early warning risk flags for educators.
 
 ---
 
@@ -43,6 +54,7 @@ Traditional educational ERP systems suffer from several critical shortcomings:
 - **Core**: React 19, TypeScript, Vite 8
 - **Styling**: Tailwind CSS v4, Custom 3D Claymorphism tokens (`.clay-card`, `.glow-purple`)
 - **Animations**: Framer Motion v12
+- **Internationalization**: Custom Reactive Language Context (English, Telugu, Hindi, Tamil, Malayalam)
 - **Icons & Data Viz**: Lucide React, Recharts
 - **Linter & Tools**: Oxlint, GitHub Actions CI/CD
 
@@ -57,7 +69,10 @@ Traditional educational ERP systems suffer from several critical shortcomings:
 
 ## 👥 Multi-Role Feature Breakdown
 
-### 🎓 1. Student Portal (`Aarav Sharma — Class 5-A, Level 5`)
+### 🎓 1. Student Portal (`Aarav Sharma — Class 8-A, Level 5`)
+- **Dedicated Homework Column Block**: View total assigned, completed, pending, and overdue homework; submit work with file attachments and notes.
+- **Dedicated Tests & Assessments Column Block**: Review upcoming/completed tests across Class Tests, Unit Tests, Home Tests, and Model Exams; test results remain hidden until published by teachers.
+- **Floating Pending Tasks Modal**: Quick popup accessed by clicking the top `HOMEWORK 3 Pending` card.
 - **XP Level Progress Bar**: "Level 5 Little Learner" (450 / 900 XP) and 7-Day Streak counter.
 - **Today's Schedule**: Timetable cards for Math, Science, English, Art & Craft, and History with room details.
 - **Gamified Quests & Quizzes**: Gamified learning modules with wrong attempt tracking and one-click *"🤖 Ask AI Agent to Clear Doubt"*.
@@ -65,28 +80,41 @@ Traditional educational ERP systems suffer from several critical shortcomings:
 - **Daily Mood Check-in**: Emoji sentiment logger (Happy 😊, Okay 😐, Sad 😞) with streak tracking.
 
 ### 👨‍👩‍👧 2. Parent Portal (`Priya Sharma`)
-- **Multi-Child Switcher**: Real-time child selection interface.
+- **Multi-Child Switcher**: Switch between linked children (Aarav - 8th Std, Ananya - 5th Std, Rohan - 2nd Std).
+- **Central Academic Progress Report**:
+  - Homework completion analytics & subject-wise status
+  - Test performance history and average test score
+  - Month-wise performance comparison and score trajectory
+  - Subject educator feedback and remarks
+  - Academic notifications and downloadable Monthly PDF Report
+- **Child Wellness Pulse & Diagnostics**:
+  - Detailed diagnostic report explaining *why* the child felt down
+  - Root cause identification (exam pressure, fatigue, social friction)
+  - Parent guidance and counselor suggestions
+- **Standard-Based Fee Portal & Receipts**:
+  - Grade-adjusted tuition fees (8th Standard: $1,050; 5th Standard: $880; 2nd Standard: $630)
+  - Itemized breakdowns (Tuition, Lab & Science, Library, Extracurricular, Transport)
+  - Printable official tax receipts with transaction reference numbers.
 - **Daily Child Timeline**: Reached School (08:15 AM), Math Homework Submitted (10:30 AM), Science Quiz (01:15 PM), Bus Boarded (03:30 PM), Reached Home (04:05 PM).
-- **Learning Progress Insights**: *"Great Progress! 📈"* analytics breakdown highlighting strengths (Math, Reading) and areas needing support.
-- **Tuition Fee Portal**: Digital fee invoice tracking ($450 Term II Tuition) with one-click payment checkout.
 
-### 👩‍🏫 3. Educator / Teacher Portal (`Mrs. Sharma — Grade 5-A`)
+### 👩‍🏫 3. Educator / Teacher Portal (`Mrs. Sharma — Grade 8-A`)
 - **Class Attendance Logger**: Interactive register for 32 enrolled students (28 Present, 4 Absent) with auto-sync to parent notifications.
 - **Class Analytics Matrix**: Overall score metrics (82% average score, +8% monthly improvement).
+- **Academic Records Management**: Create homework assignments, record assessment marks, and publish results to student/parent portals.
 - **AI Early Warning System**: Automated risk detection flags (Academic, Wellness, Attendance) with direct parent messaging shortcuts.
-- **Homework Publisher**: Assignment creation and distribution portal.
 
-### 🏫 4. Admin Command Center (`Principal Dr. Vance`)
+### 🏫 4. Admin Command Center (`Principal Dr. Eleanor Vance`)
 - **Institution Overview**: Total active students, staff attendance, fee revenue collection metrics.
 - **Route & Fleet Manager**: Campus bus tracking telemetry control.
 - **System Audit Logs & SOS Center**: Real-time campus security alert management.
+- **Broadcast Circulars**: Instant multi-role circular distribution.
 
 ---
 
 ## 📁 Repository Directory Structure
 
 ```
-ERP-System/
+Edusync-AI/
 ├── backend/                       # Node.js + Express + Prisma API Backend
 │   ├── prisma/                    # Database schema & migrations
 │   ├── src/
@@ -102,18 +130,23 @@ ERP-System/
 │   ├── components/
 │   │   ├── ai/                    # EduSync AI Study Buddy floating assistant
 │   │   ├── dashboards/            # Student, Parent, Teacher & Admin views
+│   │   ├── fees/                  # Standard-based Fee Portal & Receipts
 │   │   ├── layout/                # Navbar, RoleSwitcherBar, Sidebar
-│   │   └── modules/
-│   │       ├── communication/     # Real-time chat & Announcements
-│   │       ├── landing/           # Landing page & Auth Modal
-│   │       ├── learning/          # Gamified quizzes & AI doubt resolver
-│   │       ├── safety/            # Live Bus GPS & Digital Gate Pass
-│   │       └── wellness/          # Mood logger & Guided Breathing
-│   ├── context/                   # Global state (AppContext, ChatContext)
-│   ├── mockData/                  # Mock data fallbacks for standalone preview
+│   │   ├── modules/
+│   │   │   ├── academics/         # Parent Academic Progress Report (PDF export)
+│   │   │   ├── communication/     # Real-time chat & Announcements
+│   │   │   ├── landing/           # Landing page & Auth Modal
+│   │   │   ├── learning/          # Homework & Assessments Hub, Quizzes
+│   │   │   ├── safety/            # Live Bus GPS & Digital Gate Pass
+│   │   │   └── wellness/          # Parent Child Wellness Diagnostic Report
+│   │   ├── profile/               # Profile Creation, Profile View, Language Selection
+│   │   └── settings/              # Settings Page & Language switcher
+│   ├── context/                   # Global state (AppContext, ChatContext, LanguageContext)
+│   ├── mockData/                  # Mock data for assignments, tests, feedback, diagnostics
 │   ├── services/                  # API Integration Client
+│   ├── translations/              # Multilingual dictionaries (EN, TE, HI, TA, ML)
 │   ├── types/                     # TypeScript Interfaces
-│   ├── App.tsx                    # Main App container
+│   ├── App.tsx                    # Main App container & dynamic routing
 │   ├── index.css                  # Claymorphic CSS tokens & styling
 │   └── main.tsx                   # Frontend entry point
 ├── public/                        # Static assets & icons
@@ -139,8 +172,8 @@ ERP-System/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/kaielashbec055/ERP-System.git
-cd ERP-System
+git clone https://github.com/kaielashbec055/Edusync-AI.git
+cd Edusync-AI
 
 # 2. Install dependencies
 npm install
@@ -190,7 +223,7 @@ Backend API will run on `http://localhost:5000`.
 
 The frontend is configured for automatic **GitHub Actions CI/CD** deployment to **GitHub Pages**.
 
-- **Live URL**: `https://kaielashbec055.github.io/ERP-System/`
+- **Repository**: `https://github.com/kaielashbec055/Edusync-AI`
 - **Workflow Configuration**: `.github/workflows/deploy.yml`
 
 ---
