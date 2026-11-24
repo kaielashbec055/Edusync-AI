@@ -11,8 +11,6 @@
 
 > **Tagline**: *Every Child. Every Moment. Connected.*
 
-DEMO VIDEO LINK : https://drive.google.com/file/d/1Xbd5KgqhpMXlXjV4QaQ_L0top3oUjqRf/view?usp=sharing
-
 ---
 
 ## 🚨 The Problem
